@@ -6,6 +6,8 @@ export cls=$1
 # create user $publisher_user with encrypted password $publisher_user_pwd;
 # publisher user is created and hba accessed granted
 
+# ./setup-logical-publisher.sh testi 10.200.236.31 5432 bbs bbsrep pwd bbstasi bbs,kys,metop
+
 hst=$(hostname)
 
 publisher_server=$2
@@ -16,6 +18,8 @@ publisher_db=$4
 publisher_user=$5
 publisher_user_pwd=$6
 
+publish_name=$7
+
 # comman seperated schemas in 7
 publish_schemas=(${8//,/ })
 schema_arg=""
@@ -24,6 +28,7 @@ do
     schema_arg="${schema_arg} -n $i"
 done
 
+echo "publish_name=$publish_name"
 echo "publisher_server=$publisher_server"
 echo "publisher_port=$publisher_port"
 echo "publisher_db=$publisher_db"
@@ -40,7 +45,7 @@ pg_dumpall -p $publisher_port -r > /tmp/pscdumplp.sql
 pg_dump -p $publisher_port --create --schema-only $schema_arg $publisher_db >> /tmp/pscdumplp.sql
 
 psql -p $publisher_port $publisher_db << IEOF
-create publication kulucka for all tables;
+create publication $publish_name for all tables;
 IEOF
 
 EOF
@@ -51,7 +56,7 @@ scp $publisher_server:/tmp/pscdumplp.sql /tmp/pscdumplp.sql
 psql -f /tmp/pscdumplp.sql
 
 psql $publisher_db << EOF
-create subscription kuluckadinler connection 'host=$publisher_server port=$publisher_port dbname=${publisher_db} user=${publisher_user} password=${publisher_user_pwd}' publication kulucka;
+create subscription $publish_name connection 'host=$publisher_server port=$publisher_port dbname=${publisher_db} user=${publisher_user} password=${publisher_user_pwd}' publication $publish_name;
 EOF
 
 

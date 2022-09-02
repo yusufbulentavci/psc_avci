@@ -1,6 +1,8 @@
 export cls=$1
 [[ $PSC_RUN_COMMON != yes ]] && source /var/lib/psc/scripts/common.sh
 
+# ./helper-publisher-setup.sh testi 10.200.236.31 bbs bbsrep pwd bbs,kys,metop 
+
 hst=$(hostname)
 
 subscriber_server=$2
