@@ -1,22 +1,16 @@
 #!/usr/bin/env bash
+# Author:       Avci
 # Author:       Lesovsky A.V.
 # Description:  Pgbouncer pools stats
 # $1 - param_name, $2 - pool_name
-if [ ! -f ~zabbix/.pgpass ]; then echo "ERROR: ~zabbix/.pgpass not found" ; exit 1; fi
 
 PSQL=$(which psql)
 
-hostname=$(head -n 1 ~zabbix/.pgpass |cut -d: -f1)
-port=$(head -n 1 ~zabbix/.pgpass |cut -d: -f2)
-username=$(head -n 1 ~zabbix/.pgpass |cut -d: -f4)
-dbname="pgbouncer"
 PARAM="$1"
 
 IFS=':'; arr_poolname=($2); unset IFS;
 
-if [ '*' = "$hostname" ]; then hostname="127.0.0.1"; fi
-
-conn_param="-qAtX -F: -h $hostname -p $port -U $username $dbname"
+conn_param="-qAtX -F: pgbouncer"
 
 case "$PARAM" in
 'avg_req' )
