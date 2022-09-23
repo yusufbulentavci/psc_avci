@@ -1,21 +1,19 @@
-export cls=$1
+ilkp=$1
+ilka=(${ilkp//:/ })
+export cls=${ilka[0]}
+export clsop=${ilka[1]}
 [[ $PSC_RUN_COMMON != yes ]] && source /var/lib/psc/scripts/common.sh
 
 # ./helper-publisher-setup.sh testi 10.200.236.31 bbs bbsrep pwd bbs,kys,metop 
 
+# ./helper-publisher-setup.sh pgtest 10.150.168.16 eviz testrep testreppwd eviz
+
 hst=$(hostname)
 
-subscriber_server=$2
-publisher_db=$3
-publisher_user=$4
-publisher_user_pwd=$5
-publish_schemas=(${6//,/ })
-
-schema_arg=""
-for i in "${publish_schemas[@]}"
-do
-    schema_arg="${schema_arg} -n $i"
-done
+if [ -z "$clsop" ]; then
+	echo "Operator should be defined for this script"
+	exit 1
+fi
 
 echo "subscriber_server=$subscriber_server"
 echo "publisher_db=$publisher_db"

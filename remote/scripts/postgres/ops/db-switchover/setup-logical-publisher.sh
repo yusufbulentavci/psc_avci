@@ -1,4 +1,7 @@
-export cls=$1
+ilkp=$1
+ilka=(${ilkp//:/ })
+export cls=${ilka[0]}
+export clsop=${ilka[1]}
 [[ $PSC_RUN_COMMON != yes ]] && source /var/lib/psc/scripts/common.sh
 
 # requirement
@@ -7,6 +10,8 @@ export cls=$1
 # publisher user is created and hba accessed granted
 
 # ./setup-logical-publisher.sh testi 10.200.236.31 5432 bbs bbsrep pwd bbstasi bbs,kys,metop
+
+# ./setup-logical-publisher.sh pgtest 10.150.153.21 5432 eviz testrep testreppwd eviztasi eviz
 
 hst=$(hostname)
 

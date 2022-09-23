@@ -45,6 +45,7 @@ case "$PARAM" in
 ;;
 'sv_login' )
         $PSQL $conn_param -c "show pools" |grep -w ^$2 |cut -d: -f9
+;;
 'cl_active' )
         $PSQL $conn_param -c "show pools" |grep -w ^$2 |cut -d: -f3
 ;;

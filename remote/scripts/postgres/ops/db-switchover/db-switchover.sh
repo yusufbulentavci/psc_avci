@@ -1,7 +1,17 @@
-export cls=$1
+ilkp=$1
+ilka=(${ilkp//:/ })
+export cls=${ilka[0]}
+export clsop=${ilka[1]}
 [[ $PSC_RUN_COMMON != yes ]] && source /var/lib/psc/scripts/common.sh
 
 hst=$(hostname)
+
+
+if [ -z "$clsop" ]; then
+	echo "Operator should be defined for this script"
+	exit 1
+fi
+
 
 publisher_server=$2
 publisher_name=$3
