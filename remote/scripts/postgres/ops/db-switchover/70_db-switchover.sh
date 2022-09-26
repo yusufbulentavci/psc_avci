@@ -12,6 +12,15 @@ if [ -z "$clsop" ]; then
 	exit 1
 fi
 
+
+echo "############################"
+echo "##db-switchover"
+echo "publish_name=$publish_name"
+echo "publisher_server=$publisher_server"
+echo "publisher_port=$publisher_port"
+echo "publisher_db=$publisher_db"
+
+
 # 
 cat << EOF > /tmp/so_exec.sql
 update pg_database set datallowconn=false where datname='$publisher_db';
@@ -28,12 +37,13 @@ latency=$(echo "$latency" | xargs)
 
 echo "latency=-$latency-"
 
-if [ "0" != "$latency" ]; then
-	echo "Latency is not 0. Switch over not ready. Go manually"
-	exit 1
-fi
-
 scp $publisher_server:/tmp/so_out.sql /tmp/so_out.sql
 
-psql -c "alter subscription $publisher_name disable; alter subscription $publisher_name set (slot_name=none); drop subscription $publisher_name;" $publisher_db
-psql -f /tmp/so_out.sql $publisher_db
+echo "############################"
+echo "Here are last 10 sequence"
+
+tail -10 /tmp/so_out.sql
+
+psql -f /tmp/so_out.sql $publisher_db && echo "Successfull"
+
+echo "Done=$publish_name"

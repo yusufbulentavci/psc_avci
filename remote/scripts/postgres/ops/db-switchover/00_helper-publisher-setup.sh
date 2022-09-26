@@ -15,6 +15,9 @@ if [ -z "$clsop" ]; then
 	exit 1
 fi
 
+
+echo "### HELPER FOR DB-SWITCHOVER CONFIGURATION"
+
 echo "subscriber_server=$subscriber_server"
 echo "publisher_db=$publisher_db"
 echo "publisher_user=$publisher_user"
