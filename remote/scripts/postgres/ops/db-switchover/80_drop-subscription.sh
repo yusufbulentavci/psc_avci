@@ -15,4 +15,4 @@ fi
 echo "publish_name=$publish_name"
 echo "publisher_db=$publisher_db"
 
-psql -c "alter subscription $publisher_name disable; alter subscription $publisher_name set (slot_name=none); drop subscription $publisher_name;" $publisher_db
+psql -c "alter subscription $publish_name disable; alter subscription $publish_name set (slot_name=none); drop subscription $publish_name;" $publisher_db
